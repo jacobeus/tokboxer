@@ -135,7 +135,7 @@ module TokBoxer
       method = "POST"
       call = "/auth/validateAccessToken"
       params = { :jabberId => jabberId, :accessSecret => accessSecret }
-      result = request(method, call, params)#, @api_secret)
+      result = request(method, call, params, @api_secret)
     end
 
     # User API actions =================================================================================
@@ -153,7 +153,7 @@ module TokBoxer
       method = "POST"
       call = "/users/createGuest"
       params = { :partnerKey => @api_key }
-      result = request(method, call, params)
+      result = request(method, call, params, @api_secret)
       if result['error']
         return nil # error
       else
@@ -165,7 +165,7 @@ module TokBoxer
       method = "POST"
       call = "/users/register"
       params = { :firstname => firstname, :lastname => lastname, :email => email }
-      result = request(method, call, params)
+      result = request(method, call, params, @api_secret)
       if result['error']
         return nil # error
       else
