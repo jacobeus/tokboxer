@@ -2,15 +2,7 @@ module TokBoxer
 
   class Api
 
-    API_SERVER_LOGIN_URL       = "view/oauth&"
-    API_SERVER_METHODS_URL     = "a/v0"
-    API_SERVER_CALL_WIDGET     = "vc/"
-    API_SERVER_RECORDER_WIDGET = "vr/"
-    API_SERVER_PLAYER_WIDGET   = "vp/"
-    API_VERSION                = "1.0.0"
-    API_SIGNATURE_METHOD       = "SIMPLE-MD5"
-
-    attr_reader :api_server_url, :API_SERVER_RECORDER_WIDGET, :API_SERVER_PLAYER_WIDGET, :API_SERVER_CALL_WIDGET
+    attr_reader :api_server_url
 
     # Call API actions =================================================================================
 

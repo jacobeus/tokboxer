@@ -12,6 +12,14 @@ require 'pp' # just for debugging purposes
 
 module TokBoxer
   VERSION = '0.0.2'
+  
+  API_SERVER_LOGIN_URL       = "view/oauth&"
+  API_SERVER_METHODS_URL     = "a/v0"
+  API_SERVER_CALL_WIDGET     = "vc/"
+  API_SERVER_RECORDER_WIDGET = "vr/"
+  API_SERVER_PLAYER_WIDGET   = "vp/"
+  API_VERSION                = "1.0.0"
+  API_SIGNATURE_METHOD       = "SIMPLE-MD5"
 end
 
 require 'TokBoxer/Api'

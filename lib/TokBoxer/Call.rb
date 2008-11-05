@@ -17,11 +17,11 @@ module TokBoxer
     def embed_code(width="322", height="321")
       <<-END
       <object width="#{width}" height="#{height}">
-          <param name="movie" value="#{@api.api_server_url}#{@api.API_SERVER_CALL_WIDGET}#{id}" />
+          <param name="movie" value="#{@api.api_server_url}#{API_SERVER_CALL_WIDGET}#{id}" />
           <param name="allowFullScreen" value="true" />
           <param name="allowScriptAccess" value="true" />
           <param name="flashVars" value="textChat=true&guestList=false&inviteButton=false" />
-          <embed src="#{@api.api_server_url}#{@api.API_SERVER_CALL_WIDGET}#{id}"
+          <embed src="#{@api.api_server_url}#{API_SERVER_CALL_WIDGET}#{id}"
                  type="application/x-shockwave-flash"
                  allowfullscreen="true"
                  allowScriptAccess="always"

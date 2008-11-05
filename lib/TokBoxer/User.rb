@@ -69,10 +69,10 @@ module TokBoxer
       # }
       <<-END
       <object width="#{width}" height="#{height}">
-        <param name="movie" value="#{@api.api_server_url}#{@api.API_SERVER_RECORDER_WIDGET}"></param>
+        <param name="movie" value="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"></param>
         <param name="allowFullScreen" value="true"></param>
         <param name="allowScriptAccess" value="true"></param>
-        <embed id="tbx_recorder" src="#{@api.api_server_url}#{@api.API_SERVER_RECORDER_WIDGET}"
+        <embed id="tbx_recorder" src="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"
           type="application/x-shockwave-flash"
           allowfullscreen="true"
           allowScriptAccess="always"
@@ -88,10 +88,10 @@ module TokBoxer
       <<-END
       <object width="#{width}" height="#{height}">
 
-        <param name="movie" value="#{@api.api_server_url}#{@api.API_SERVER_PLAYER_WIDGET}"></param>
+        <param name="movie" value="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"></param>
         <param name="allowFullScreen" value="true"></param>
         <param name="allowScriptAccess" value="true"></param>
-        <embed id="tbx_player" src="#{@api.api_server_url}#{@api.API_SERVER_PLAYER_WIDGET}"
+        <embed id="tbx_player" src="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"
           type="application/x-shockwave-flash"
           allowfullscreen="true"
           allowScriptAccess="always"
