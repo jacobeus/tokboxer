@@ -79,6 +79,7 @@ module TokBoxer
           allowScriptAccess="always"
           width="#{width}"
           height="#{height}"
+          FlashVars="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true"
         >
         </embed>
       </object>
