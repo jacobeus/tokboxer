@@ -16,19 +16,19 @@ For the moment, this gem currently specifically serves our needs for the impleme
 
 * Features currently available:
 
-* * Create a guest user or register a user on TokBox
-
-* * Get information about a user
-
-* * Create a call
-
-* * Retrieve the list of vmails for a user
-
-* * Generate embed codes for a player, a recorder, and a call
+  * Create a guest user or register a user on TokBox
+  
+  * Get information about a user
+  
+  * Create a call
+  
+  * Retrieve the list of vmails for a user
+  
+  * Generate embed codes for a player, a recorder, and a call
 
 * Limitations:
 
-* * For the moments, the Call and VMail objects are quite simple (they only hold an id)
+  * For the moments, the Call and VMail objects are quite simple (they only hold an id)
 
 == SYNOPSIS:
 

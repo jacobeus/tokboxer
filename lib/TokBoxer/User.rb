@@ -58,7 +58,7 @@ module TokBoxer
       end
     end
     
-    def recorder_embed_code(width="322", height="321")
+    def recorder_embed_code(width="322", height="321",vmailToEmail="")
       # TODO: this comes from the PHP api. Not yet implemented here
       # if($isGuest) {
       #   $apiObj = new TokBoxApi(API_Config::PARTNER_KEY, API_Config::PARTNER_SECRET);
@@ -72,14 +72,14 @@ module TokBoxer
         <param name="movie" value="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"></param>
         <param name="allowFullScreen" value="true"></param>
         <param name="allowScriptAccess" value="true"></param>
-        <param name="FlashVars" value="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true"></param>
+        <param name="FlashVars" value="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true&vmailToEmail=#{vmailToEmail}"></param>
         <embed id="tbx_recorder" src="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"
           type="application/x-shockwave-flash"
           allowfullscreen="true"
           allowScriptAccess="always"
           width="#{width}"
           height="#{height}"
-          FlashVars="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true"
+          FlashVars="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true&vmailToEmail=#{vmailToEmail}"
         >
         </embed>
       </object>
