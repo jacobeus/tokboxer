@@ -1,4 +1,4 @@
-module Tokboxer
+module TokBoxer
 
   class TokBox
 
@@ -9,6 +9,8 @@ module Tokboxer
     API_SERVER_PLAYER_WIDGET   = "vp/"
     API_VERSION                = "1.0.0"
     API_SIGNATURE_METHOD       = "SIMPLE-MD5"
+
+    attr_reader :api_server_url, :API_SERVER_RECORDER_WIDGET, :API_SERVER_PLAYER_WIDGET, :API_SERVER_CALL_WIDGET
 
     # Call API actions =================================================================================
 
@@ -127,24 +129,33 @@ module Tokboxer
       method = "POST"
       call = "/auth/getAccessToken"
       params = { :jabberId => jabberId, :password => password }
-      result = request(method, call, params)
+      result = request(method, call, params, @api_secret)
     end
 
     def get_request_token(callbackUrl)
       method = "POST"
       call = "/auth/getRequestToken"
       params = { :callbackUrl => callbackUrl }
-      result = request(method, call, params)
+      result = request(method, call, params, @api_secret)
     end
 
     def validate_access_token(jabberId, accessSecret)
       method = "POST"
       call = "/auth/validateAccessToken"
       params = { :jabberId => jabberId, :accessSecret => accessSecret }
-      result = request(method, call, params)
+      result = request(method, call, params)#, @api_secret)
     end
 
     # User API actions =================================================================================
+
+    def login_user(jabberId, secret)
+      @jabberId = jabberId
+      @secret = secret
+    end
+    
+    def create_user(jabberId, secret)
+      TokBoxer::TokBoxUser.new(jabberId, secret, self)
+    end
 
     def create_guest_user
       method = "POST"
@@ -154,19 +165,19 @@ module Tokboxer
       if result['error']
         return nil # error
       else
-        return login_user(result["createGuest"].first["jabberId"].first, result["createGuest"].first["secret"].first)
+        return create_user(result["createGuest"].first["jabberId"].first, result["createGuest"].first["secret"].first)
       end
     end
 
     def register_user(firstname,lastname,email)
       method = "POST"
       call = "/users/register"
-      params = { :firstname => "Nicolas", :lastname => "Jacobeus", :email => "njacobeus@gmail.com" }
+      params = { :firstname => firstname, :lastname => lastname, :email => email }
       result = request(method, call, params)
       if result['error']
         return nil # error
       else
-        return login_user(result["registerUser"].first["jabberId"].first, result["registerUser"].first["secret"].first)
+        return create_user(result["registerUser"].first["jabberId"].first, result["registerUser"].first["secret"].first)
       end
     end
 
@@ -222,14 +233,6 @@ module Tokboxer
       result = request(method, call, params)
     end
 
-    # ==================================================================================================
-
-    def login_user(jabberId, secret)
-      @jabberId = jabberId
-      @secret = secret
-      return TokBoxUser.new(@jabberId, @secret, self)
-    end
-
     private # ==========================================================================================
 
     def initialize(api_key, api_secret, api_server_url = 'http://sandbox.tokbox.com/')
@@ -244,10 +247,10 @@ module Tokboxer
 
     def generate_request_string(hash)
       hash.reject{ |k,v| k=~/^_/ or v.nil? or v.to_s == "" }.
-               map{|k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}"}.sort.join("&")
+               map{|k,v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}".gsub("+","%20")}.sort.join("&")
     end
 
-    def build_signed_request(method, uri, nonce, timestamp, paramList)
+    def build_signed_request(method, uri, nonce, timestamp, paramList, secret)
       signed_auth_fields = { 'oauth_partner_key'      => @api_key,
                              'oauth_signature_method' => API_SIGNATURE_METHOD,
                              'oauth_timestamp'        => timestamp,
@@ -255,10 +258,11 @@ module Tokboxer
                              'oauth_nonce'            => nonce,
                              'tokbox_jabberid'        => @jabberId }.merge(paramList)
       request_string = method + "&" + uri + "&" + generate_request_string(signed_auth_fields)
-      Digest::MD5.hexdigest(request_string + (@secret||@api_secret))
+      puts "*** #{request_string}"
+      Digest::MD5.hexdigest(request_string + secret)
     end
 
-    def request(method, apiURL, paramList)
+    def request(method, apiURL, paramList, secret = nil)
       nonce = generate_nonce
       timestamp = Time.now.to_i
       request_url = @api_server_url + API_SERVER_METHODS_URL + apiURL
@@ -267,16 +271,19 @@ module Tokboxer
                      'oauth_timestamp'        => timestamp,
                      'oauth_version'          => API_VERSION,
                      'oauth_nonce'            => nonce,
-                     'oauth_signature'        => build_signed_request(method,request_url,nonce,timestamp,paramList),
+                     'oauth_signature'        => build_signed_request(method,request_url,nonce,timestamp,paramList, secret || @secret),
                      'tokbox_jabberid'        => @jabberId }
       datastring = generate_request_string(paramList)+"&"+generate_request_string(authfields)
       datastring += '&_AUTHORIZATION='
-      datastring += CGI.escape(authfields.map{|k,v|"#{CGI.escape(k.to_s)}=\"#{CGI.escape(v.to_s)}\""}.join(","))
+      datastring += authfields.map{|k,v|"#{CGI.escape(k.to_s)}=\"#{CGI.escape(v.to_s)}\""}.join(",").gsub("+","%20")
       puts "=========================v"
       puts "Call   : #{method} #{request_url}"
       puts "Params : #{paramList.inspect}"
       puts "-------------------------"
-      result = RestClient.post(request_url, datastring)
+      url        = URI.parse(request_url)
+      request    = Net::HTTP.new(url.host,url.port)
+      response   = request.post(url.path,datastring)
+      result     = response.body
       xml_result = XmlSimple.xml_in(result)
       pp xml_result
       puts "=========================^"

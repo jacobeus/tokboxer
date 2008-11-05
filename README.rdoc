@@ -1,32 +1,67 @@
 = TokBoxer
 
-* FIX (url)
+* http://github.com/njacobeus/tokboxer/
+
+[ Not yet releasable - wait for it to be published on RubyForge ]
 
 == DESCRIPTION:
 
-FIX (describe your package)
+This is a ruby implementation of the TokBox API. Tokbox is a free video calling / video mailing platform (see http://www.tokbox.com).
+
+All API methods specified in the Tokbox Developer API wiki (http://developers.tokbox.com/index.php/API) are implemented but not all objects yet. So you may have to dig into the hash returned by the call (XML converted to a Ruby hash).
+
+For the moment, this gem currently specifically serves our needs for the implementation of video conversations and video mails on iStockCV (www.istockcv.com), an online recruitment network which we are developing. Your needs may vary so feel free to contact me (nj@belighted.com).
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Here are the features currently available in TokBoxer:
+** Create a guest user or register a user on TokBox
+** Get information about a user
+** Create a call (persistent or not)
+** Retrieve the feed for a user
+** Generate embed codes for a player, a recorder, and a call
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  # To create an instance of the API object:
+
+  api  = TokBoxer::TokBox.new(partner_key, partner_secret, api_server_url) # replace with your own; api_server_url defaults to "http://sandbox.tokbox.com/"
+
+  # To create a user instance:
+
+  user = api.create_guest_user
+  # or
+  user = api.register_user(firstname, lastname, email)
+  # or if you have already created a user previously on TokBox
+  user = api.create_user(user_jabber_id, user_secret)
+
+  # To get info about the user object:
+
+  api.get_user_profile(user.jabberId)
+  user.access_token_valid? # returns true or false whether the secret of the user is correct or not
+
+  # To create a call
+
+  ...
+
+  # To manipulate feeds:
+
+  ...
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* xml-simple
+* A partner key and a partner secret at Tokbox (you can get those here: http://developers.tokbox.com/index.php/Main_Page)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install tokboxer
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 Nicolas Jacobeus
+Copyright (c) 2008 Nicolas Jacobeus - Belighted SPRL (http://www.belighted.com/)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
