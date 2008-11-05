@@ -72,6 +72,7 @@ module TokBoxer
         <param name="movie" value="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"></param>
         <param name="allowFullScreen" value="true"></param>
         <param name="allowScriptAccess" value="true"></param>
+        <param name="FlashVars" value="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}&offsiteAuth=true"></param>
         <embed id="tbx_recorder" src="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"
           type="application/x-shockwave-flash"
           allowfullscreen="true"
@@ -104,7 +105,7 @@ module TokBoxer
       END
     end
     
-    def is_online
+    def is_online?
       info["isOnline"].first == "true"
     end
     

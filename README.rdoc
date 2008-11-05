@@ -15,13 +15,20 @@ For the moment, this gem currently specifically serves our needs for the impleme
 == FEATURES/PROBLEMS:
 
 * Features currently available:
-** Create a guest user or register a user on TokBox
-** Get information about a user
-** Create a call (persistent or not)
-** Retrieve the feed for a user
-** Generate embed codes for a player, a recorder, and a call
+
+* * Create a guest user or register a user on TokBox
+
+* * Get information about a user
+
+* * Create a call
+
+* * Retrieve the list of vmails for a user
+
+* * Generate embed codes for a player, a recorder, and a call
+
 * Limitations:
-** For the moments, the Call and VMail objects are quite simple (they only hold an id)
+
+* * For the moments, the Call and VMail objects are quite simple (they only hold an id)
 
 == SYNOPSIS:
 
@@ -39,18 +46,28 @@ For the moment, this gem currently specifically serves our needs for the impleme
 
   # To get info about the user object:
 
-  api.get_user_profile(user.jabberId)
   user.access_token_valid? # returns true or false whether the secret of the user is correct or not
+  user.is_online?
+  user.display_name
+  user.username
+  user.userid
+  user.show
 
-  # To create a call
+  # To embed a player or a recorder:
+  
+  user.recorder_embed_code(width, height)           # returns the HTML for embedding a recorder
+  user.player_embed_code(message_id, width, height) # returns the HTML for embedding a player for a specific message
+
+  # To create a call:
 
   call = user.create_call("My full name") # set "true" as 2nd param if you want it persistent
   call.embed_code                         # returns the HTML for embedding the call in a web page
 
   # To manipulate vmails:
 
-  user.sent_vmails     # returns an array of VMail objects
-  user.received_vmails # returns an array of VMail objects
+  user.vmails          # returns an array of VMail objects for all the vmails in the user's feed
+  user.sent_vmails     # returns an array of VMail objects for sent vmails only
+  user.received_vmails # returns an array of VMail objects for received vmails only
 
 == REQUIREMENTS:
 
