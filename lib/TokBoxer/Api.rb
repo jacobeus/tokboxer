@@ -2,7 +2,7 @@ module TokBoxer
 
   class Api
 
-    attr_reader :api_server_url
+    attr_reader :api_server_url, :api_key
 
     # Call API actions =================================================================================
 
