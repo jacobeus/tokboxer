@@ -1,17 +1,17 @@
 module TokBoxer
   
-  class TokBoxCall
+  class Call
     
     attr_reader :callerName, :callId, :callerJabberId, :persistent, :server
     alias       :id :callId
     
     def initialize(callerName, callId, callerJabberId, persistent, server, api)
-      @callerName = callerName
-      @callId = callId
+      @callerName     = callerName
+      @callId         = callId
       @callerJabberId = callerJabberId
-      @persistent = persistent
-      @server = server
-      @api = api
+      @persistent     = persistent
+      @server         = server
+      @api            = api
     end
     
     def embed_code(width="322", height="321")
@@ -34,7 +34,7 @@ module TokBoxer
     end
     
     def to_s
-      "#{@persistent ? 'P' : 'Non-p'}ersistent call (#{@callId}) initiated by #{@callerName} (#{@callerJabberId}) on server #{@server}."
+      id
     end
     
   end

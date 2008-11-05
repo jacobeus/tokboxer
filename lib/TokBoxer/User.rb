@@ -1,6 +1,6 @@
 module TokBoxer
   
-  class TokBoxUser
+  class User
     
     attr_reader :jabberId, :secret
     alias       :id :jabberId
@@ -22,12 +22,12 @@ module TokBoxer
     def create_call(full_name,persistent=false)
       result = @api.create_call(@jabberId, full_name, persistent)
       if result['createCall'] and (createCall=result['createCall'].first)
-        TokBoxCall.new createCall['callerName'],
-                       createCall['callId'].first,
-                       createCall['callerJabberId'],
-                       createCall['persistent'],
-                       createCall['server'].first,
-                       @api
+        Call.new createCall['callerName'],
+                 createCall['callId'].first,
+                 createCall['callerJabberId'],
+                 createCall['persistent'],
+                 createCall['server'].first,
+                 @api
       else
         nil
       end
@@ -36,6 +36,26 @@ module TokBoxer
     def access_token_valid?
       result = @api.validate_access_token(@jabberId, @secret)
       result['validateAccessToken'].first["isValid"].first == "true"
+    end
+    
+    # Feeds ============================================================================================
+    
+    def vmails
+      @api.get_feed(@jabberId,"all")["feed"].first["item"].map do |m|
+        VMail.new m["videoMail"].first["content"]["messageId"].first
+      end
+    end
+    
+    def sent_vmails
+      @api.get_feed(@jabberId,"vmailSent")["feed"].first["item"].map do |m|
+        VMail.new m["videoMail"].first["content"]["messageId"].first
+      end
+    end
+    
+    def received_vmails
+      @api.get_feed(@jabberId,"vmailRecv")["feed"].first["item"].map do |m|
+        VMail.new m["videoMail"].first["content"]["messageId"].first
+      end
     end
     
     def recorder_embed_code(width="322", height="321")

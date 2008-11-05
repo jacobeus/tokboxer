@@ -1,6 +1,6 @@
 == 0.0.2 2008-11-05
 
-* Added classes TokBoxVMail, TokBoxFeed and TokBoxCall
+* Added classes VMail and Call
 * Corrected bug with url encoding (didn't deal properly with spaces in params)
 * Some stupid bugs removed
 * Added some documentation and cleaned the gem

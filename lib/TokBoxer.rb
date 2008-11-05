@@ -14,8 +14,7 @@ module TokBoxer
   VERSION = '0.0.2'
 end
 
-require 'TokBoxer/TokBox'
-require 'TokBoxer/TokBoxUser'
-require 'TokBoxer/TokBoxCall'
-require 'TokBoxer/TokBoxVMail'
-require 'TokBoxer/TokBoxFeed'
+require 'TokBoxer/Api'
+require 'TokBoxer/User'
+require 'TokBoxer/Call'
+require 'TokBoxer/VMail'

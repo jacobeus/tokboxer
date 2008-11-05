@@ -1,6 +1,6 @@
 module TokBoxer
 
-  class TokBox
+  class Api
 
     API_SERVER_LOGIN_URL       = "view/oauth&"
     API_SERVER_METHODS_URL     = "a/v0"
@@ -154,7 +154,7 @@ module TokBoxer
     end
     
     def create_user(jabberId, secret)
-      TokBoxer::TokBoxUser.new(jabberId, secret, self)
+      TokBoxer::User.new(jabberId, secret, self)
     end
 
     def create_guest_user
@@ -258,7 +258,6 @@ module TokBoxer
                              'oauth_nonce'            => nonce,
                              'tokbox_jabberid'        => @jabberId }.merge(paramList)
       request_string = method + "&" + uri + "&" + generate_request_string(signed_auth_fields)
-      puts "*** #{request_string}"
       Digest::MD5.hexdigest(request_string + secret)
     end
 
@@ -276,17 +275,21 @@ module TokBoxer
       datastring = generate_request_string(paramList)+"&"+generate_request_string(authfields)
       datastring += '&_AUTHORIZATION='
       datastring += authfields.map{|k,v|"#{CGI.escape(k.to_s)}=\"#{CGI.escape(v.to_s)}\""}.join(",").gsub("+","%20")
-      puts "=========================v"
-      puts "Call   : #{method} #{request_url}"
-      puts "Params : #{paramList.inspect}"
-      puts "-------------------------"
+      if @debug
+        puts "=========================v"
+        puts "Call   : #{method} #{request_url}"
+        puts "Params : #{paramList.inspect}"
+        puts "-------------------------"
+      end
       url        = URI.parse(request_url)
       request    = Net::HTTP.new(url.host,url.port)
       response   = request.post(url.path,datastring)
       result     = response.body
       xml_result = XmlSimple.xml_in(result)
-      pp xml_result
-      puts "=========================^"
+      if @debug
+        pp xml_result
+        puts "=========================^"  
+      end
       xml_result
     end
 

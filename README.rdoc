@@ -14,18 +14,20 @@ For the moment, this gem currently specifically serves our needs for the impleme
 
 == FEATURES/PROBLEMS:
 
-* Here are the features currently available in TokBoxer:
+* Features currently available:
 ** Create a guest user or register a user on TokBox
 ** Get information about a user
 ** Create a call (persistent or not)
 ** Retrieve the feed for a user
 ** Generate embed codes for a player, a recorder, and a call
+* Limitations:
+** For the moments, the Call and VMail objects are quite simple (they only hold an id)
 
 == SYNOPSIS:
 
   # To create an instance of the API object:
 
-  api  = TokBoxer::TokBox.new(partner_key, partner_secret, api_server_url) # replace with your own; api_server_url defaults to "http://sandbox.tokbox.com/"
+  api  = TokBoxer::Api.new(partner_key, partner_secret, api_server_url) # defaults to "http://sandbox.tokbox.com/"
 
   # To create a user instance:
 
@@ -42,11 +44,13 @@ For the moment, this gem currently specifically serves our needs for the impleme
 
   # To create a call
 
-  ...
+  call = user.create_call("My full name") # set "true" as 2nd param if you want it persistent
+  call.embed_code                         # returns the HTML for embedding the call in a web page
 
-  # To manipulate feeds:
+  # To manipulate vmails:
 
-  ...
+  user.sent_vmails     # returns an array of VMail objects
+  user.received_vmails # returns an array of VMail objects
 
 == REQUIREMENTS:
 
