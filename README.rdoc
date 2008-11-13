@@ -2,8 +2,6 @@
 
 * http://github.com/njacobeus/tokboxer/
 
-[ Not yet releasable - wait for it to be published on RubyForge ]
-
 == DESCRIPTION:
 
 This is a ruby implementation of the TokBox API. Tokbox is a free video calling / video mailing platform (see http://www.tokbox.com).
@@ -17,18 +15,20 @@ For the moment, this gem currently specifically serves our needs for the impleme
 * Features currently available:
 
   * Create a guest user or register a user on TokBox
-  
+
   * Get information about a user
-  
+
   * Create a call
-  
+
   * Retrieve the list of vmails for a user
-  
+
   * Generate embed codes for a player, a recorder, and a call
 
 * Limitations:
 
-  * For the moments, the Call and VMail objects are quite simple (they only hold an id)
+  * For the moment, the Call and VMail objects are quite simple (they only hold an id)
+
+  * No tests yet (ouch)
 
 == SYNOPSIS:
 
@@ -75,6 +75,11 @@ For the moment, this gem currently specifically serves our needs for the impleme
 * A partner key and a partner secret at Tokbox (you can get those here: http://developers.tokbox.com/index.php/Main_Page)
 
 == INSTALL:
+
+* gem sources -a http://gems.github.com
+* sudo gem install njacobeus-tokboxer
+
+OR (from RubyForge)
 
 * sudo gem install tokboxer
 
