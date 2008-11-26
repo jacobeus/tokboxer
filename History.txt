@@ -1,3 +1,7 @@
+== 0.1.1 2008-11-26
+
+* Fixed config problem causing missing files in the gem
+
 == 0.1.0 2008-11-13
 
 * First gem release
