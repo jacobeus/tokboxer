@@ -1,24 +1,24 @@
 module TokBoxer
-  
+
   class User
-    
+
     attr_reader :jabberId, :secret
     alias       :id :jabberId
-    
+
     def initialize(jabberId, secret, api)
       @jabberId = jabberId
       @secret = secret
       @api = api
       self.login
     end
-    
+
     # TODO add a method which calls get_request_token from the API
     # to get the jabberId and secret from the email and password
-    
+
     def login
       @api.login_user(self.jabberId,self.secret)
     end
-    
+
     def create_call(full_name,persistent=false)
       result = @api.create_call(@jabberId, full_name, persistent)
       if result['createCall'] and (createCall=result['createCall'].first)
@@ -32,41 +32,39 @@ module TokBoxer
         nil
       end
     end
-    
+
     def access_token_valid?
       result = @api.validate_access_token(@jabberId, @secret)
       result['validateAccessToken'].first["isValid"].first == "true"
     end
-    
+
     # Feeds ============================================================================================
-    
+
+    protected
+
+    def build_vmails_array(what)
+      @api.get_feed(@jabberId,what)["feed"].first["item"].map do |m|
+        next unless m["videoMail"]
+        VMail.new :id => m["videoMail"].first["vmailId"],
+                  :message_id => m["videoMail"].first["content"]["messageId"].first
+      end.compact
+    end
+
+    public
+
     def vmails
-      @api.get_feed(@jabberId,"all")["feed"].first["item"].map do |m|
-        VMail.new m["videoMail"].first["content"]["messageId"].first
-      end
+      build_vmails_array("all")
     end
-    
+
     def sent_vmails
-      @api.get_feed(@jabberId,"vmailSent")["feed"].first["item"].map do |m|
-        VMail.new m["videoMail"].first["content"]["messageId"].first
-      end
+      build_vmails_array("vmailSent")
     end
-    
+
     def received_vmails
-      @api.get_feed(@jabberId,"vmailRecv")["feed"].first["item"].map do |m|
-        VMail.new m["videoMail"].first["content"]["messageId"].first
-      end
+      build_vmails_array("vmailRecv")
     end
-    
+
     def recorder_embed_code(width="322", height="321",vmailToEmail="")
-      # TODO: this comes from the PHP api. Not yet implemented here
-      # if($isGuest) {
-      #   $apiObj = new TokBoxApi(API_Config::PARTNER_KEY, API_Config::PARTNER_SECRET);
-      #   $apiObj->updateToken($apiObj->getRequestToken(API_Config::CALLBACK_URL));
-      # 
-      #   $htmlCode .= "<script language=\"javascript\" src=\"SDK/js/TokBoxScript.js\"></script>\n";
-      #   $htmlCode .= "<body onclick=\"setToken('".$apiObj->getAuthToken()."');\">\n";     
-      # }
       <<-END
       <object width="#{width}" height="#{height}">
         <param name="movie" value="#{@api.api_server_url}#{API_SERVER_RECORDER_WIDGET}"></param>
@@ -105,33 +103,33 @@ module TokBoxer
       </object>
       END
     end
-    
+
     def is_online?
       info["isOnline"].first == "true"
     end
-    
+
     def display_name
       info["displayName"].first
     end
-    
+
     def username
       info["username"].first
     end
-    
+
     def userid
       info["userid"].first
     end
-    
+
     def show
       info["show"].first
     end
-    
+
     protected
-    
+
     def info
       @info ||= @api.get_user_profile(self.jabberId)["getUserProfile"].first
     end
-    
+
   end
-  
+
 end

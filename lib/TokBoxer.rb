@@ -11,7 +11,7 @@ require 'xmlsimple'
 require 'pp' # just for debugging purposes
 
 module TokBoxer
-  VERSION = '0.1.1'
+  VERSION = '0.1.2'
   
   API_SERVER_LOGIN_URL       = "view/oauth&"
   API_SERVER_METHODS_URL     = "a/v0"
@@ -26,3 +26,4 @@ require 'TokBoxer/Api'
 require 'TokBoxer/User'
 require 'TokBoxer/Call'
 require 'TokBoxer/VMail'
+require 'TokBoxer/Exceptions'

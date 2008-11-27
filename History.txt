@@ -1,3 +1,8 @@
+== 0.1.2 2008-11-27
+
+* VMail objects now hold both the message id and the vmail id
+* Added basic exception management
+
 == 0.1.1 2008-11-26
 
 * Fixed config problem causing missing files in the gem

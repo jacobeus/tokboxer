@@ -155,7 +155,7 @@ module TokBoxer
       params = { :partnerKey => @api_key }
       result = request(method, call, params, @api_secret)
       if result['error']
-        return nil # error
+        raise UnknownException, result['error'].inspect
       else
         return create_user(result["createGuest"].first["jabberId"].first, result["createGuest"].first["secret"].first)
       end
@@ -167,7 +167,8 @@ module TokBoxer
       params = { :firstname => firstname, :lastname => lastname, :email => email }
       result = request(method, call, params, @api_secret)
       if result['error']
-        return nil # error
+        raise EmailAlreadyInUseException if result['error'].first['content'] == "That email is already in use" # error
+        raise UnknownException, result['error'].inspect
       else
         return create_user(result["registerUser"].first["jabberId"].first, result["registerUser"].first["secret"].first)
       end
@@ -227,10 +228,11 @@ module TokBoxer
 
     private # ==========================================================================================
 
-    def initialize(api_key, api_secret, api_server_url = 'http://sandbox.tokbox.com/')
+    def initialize(api_key, api_secret, api_server_url = 'http://sandbox.tokbox.com/', debug = false)
         @api_key = api_key
         @api_secret = api_secret
         @api_server_url = api_server_url
+        @debug = debug
     end
 
     def generate_nonce
