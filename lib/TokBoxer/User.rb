@@ -43,7 +43,9 @@ module TokBoxer
     protected
 
     def build_vmails_array(what)
-      @api.get_feed(@jabberId,what)["feed"].first["item"].map do |m|
+      xml = @api.get_feed(@jabberId,what)
+      return [] unless xml["feed"].first["item"]
+      xml["feed"].first["item"].map do |m|
         next unless m["videoMail"]
         VMail.new :id => m["videoMail"].first["vmailId"],
                   :message_id => m["videoMail"].first["content"]["messageId"].first
@@ -91,6 +93,7 @@ module TokBoxer
         <param name="movie" value="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"></param>
         <param name="allowFullScreen" value="true"></param>
         <param name="allowScriptAccess" value="true"></param>
+        <param name="flashvars" value="targetVmail=#{messageId}"></param>
         <embed id="tbx_player" src="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"
           type="application/x-shockwave-flash"
           allowfullscreen="true"
