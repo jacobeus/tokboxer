@@ -276,10 +276,17 @@ module TokBoxer
         puts "-------------------------"
       end
       url        = URI.parse(request_url)
-      request    = Net::HTTP.new(url.host,url.port)
-      response   = request.post(url.path,datastring)
-      result     = response.body
-      xml_result = XmlSimple.xml_in(result)
+      connection = Net::HTTP.new(url.host,url.port)
+      begin
+        response = connection.post(url.path,datastring)
+      rescue
+        raise CouldNotConnectToTokbox, "problem with URL"
+      end
+      if response.code.to_i / 100 == 2
+        xml_result = XmlSimple.xml_in(response.body)
+      else
+        raise CouldNotConnectToTokbox, "#{response.message} (#{response.code})"
+      end
       if @debug
         pp xml_result
         puts "=========================^"  

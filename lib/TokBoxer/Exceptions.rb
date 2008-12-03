@@ -1,4 +1,6 @@
 module TokBoxer
-  class EmailAlreadyInUseException < Exception; end;
-  class UnknownException < Exception; end;
+  class TokBoxerException < RuntimeError; end;
+  class EmailAlreadyInUseException < TokBoxerException; end;
+  class CouldNotConnectToTokbox < TokBoxerException; end
+  class UnknownException < TokBoxerException; end;
 end

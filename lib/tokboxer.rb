@@ -9,6 +9,8 @@ require 'cgi'
 require 'xmlsimple'
 require 'pp' # just for debugging purposes
 
+Net::HTTP.version_1_2 # to make sure version 1.2 is used
+
 module TokBoxer
   VERSION = '0.1.3'
   
