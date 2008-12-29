@@ -1,6 +1,7 @@
-== 0.1.4 2008-12-03
+== 0.1.4 2008-12-29
 
 * Raise an exception when there is an HTTP error
+* Updated player embed code
 
 == 0.1.3 2008-12-01
 

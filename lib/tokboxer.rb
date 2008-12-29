@@ -12,7 +12,7 @@ require 'pp' # just for debugging purposes
 Net::HTTP.version_1_2 # to make sure version 1.2 is used
 
 module TokBoxer
-  VERSION = '0.1.3'
+  VERSION = '0.1.4'
   
   API_SERVER_LOGIN_URL       = "view/oauth&"
   API_SERVER_METHODS_URL     = "a/v0"

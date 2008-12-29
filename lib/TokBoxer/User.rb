@@ -88,22 +88,10 @@ module TokBoxer
 
     def player_embed_code(messageId, width="425", height="344")
       <<-END
-      <object width="#{width}" height="#{height}">
-
-        <param name="movie" value="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"></param>
-        <param name="allowFullScreen" value="true"></param>
-        <param name="allowScriptAccess" value="true"></param>
-        <param name="flashvars" value="targetVmail=#{messageId}"></param>
-        <embed id="tbx_player" src="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}"
-          type="application/x-shockwave-flash"
-          allowfullscreen="true"
-          allowScriptAccess="always"
-          flashvars="targetVmail=#{messageId}"
-          width="#{width}" 
-          height="#{height}"
-        >
-        </embed>
-      </object>
+      <object type="application/x-shockwave-flash" data="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}#{messageId}" width="#{width}" height="#{height}">
+                      <param name="movie" value="#{@api.api_server_url}#{API_SERVER_PLAYER_WIDGET}#{messageId}" />
+                      <param name="FlashVars" value="tokboxPartnerKey=#{@api.api_key}&tokboxJid=#{jabberId}&tokboxAccessSecret=#{secret}" />
+       </object>
       END
     end
 
